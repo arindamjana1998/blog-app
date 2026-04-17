@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { userService } from "@/services/contentService";
 import { Role } from "@/types";
-import { X, Loader2, UserPlus, Shield } from "lucide-react";
+import { X, Loader2, UserPlus, Shield, Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 
 interface UserModalProps {
@@ -23,6 +23,7 @@ const UserModal: React.FC<UserModalProps> = ({
   const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(false);
   const [fetchingRoles, setFetchingRoles] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -101,14 +102,23 @@ const UserModal: React.FC<UserModalProps> = ({
             <label className="text-sm font-semibold text-slate-700">
               Password
             </label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
-              placeholder="Enter password"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium pr-12"
+                placeholder="Enter password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-blue-500 transition-colors cursor-pointer"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
 
           <div className="space-y-2">
