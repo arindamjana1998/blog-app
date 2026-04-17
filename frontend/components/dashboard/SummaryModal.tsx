@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { contentService } from "@/services/contentService";
-import { Content, ContentStatus } from "@/types";
+import { Content } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import {
   X,
@@ -11,11 +11,10 @@ import {
   CheckCircle,
   XCircle,
   Eye,
-  ArrowRight,
 } from "lucide-react";
 import { cn, formatDate } from "@/lib/utils";
-import WorkflowModal from "./WorkflowModal";
-import DetailsModal from "./DetailsModal";
+import WorkflowModal from "../content/WorkflowModal";
+import DetailsModal from "../content/DetailsModal";
 
 interface SummaryModalProps {
   isOpen: boolean;
@@ -36,7 +35,7 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
   const [isWorkflowModalOpen, setIsWorkflowModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [workflowType, setWorkflowType] = useState<"approve" | "reject">(
-    "approve",
+    "approve"
   );
   const { user } = useAuth();
 
@@ -62,7 +61,7 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
 
   const handleAction = (
     content: Content,
-    action: "approve" | "reject" | "details",
+    action: "approve" | "reject" | "details"
   ) => {
     setSelectedContent(content);
     if (action === "details") {
@@ -94,7 +93,7 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-white rounded-xl shadow-sm transition-all border border-transparent hover:border-slate-100"
+            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-white rounded-xl shadow-sm transition-all border border-transparent hover:border-slate-100 cursor-pointer"
           >
             <X className="w-6 h-6" />
           </button>
@@ -167,7 +166,7 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
                                   onClick={() =>
                                     handleAction(content, "approve")
                                   }
-                                  className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                                  className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors cursor-pointer"
                                   title="Approve"
                                 >
                                   <CheckCircle className="w-5 h-5" />
@@ -176,7 +175,7 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
                                   onClick={() =>
                                     handleAction(content, "reject")
                                   }
-                                  className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                                  className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-100 rounded-lg transition-colors cursor-pointer"
                                   title="Reject"
                                 >
                                   <XCircle className="w-5 h-5" />
@@ -185,7 +184,7 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
                             )}
                             <button
                               onClick={() => handleAction(content, "details")}
-                              className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
                               title="View Details"
                             >
                               <Eye className="w-5 h-5" />
@@ -207,7 +206,7 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
           </p>
           <button
             onClick={onClose}
-            className="px-8 py-3 bg-white border border-slate-200 rounded-2xl font-bold text-slate-600 hover:bg-slate-100 transition-all shadow-sm"
+            className="px-8 py-3 bg-white border border-slate-200 rounded-2xl font-bold text-slate-600 hover:bg-slate-100 transition-all shadow-sm cursor-pointer"
           >
             Close Summary
           </button>

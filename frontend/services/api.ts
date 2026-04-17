@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const API = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
@@ -27,6 +28,9 @@ API.interceptors.response.use((response) => {
             localStorage.removeItem('user');
             window.location.href = '/login';
         }
+    } else {
+        const message = error.response?.data?.message || 'Something went wrong';
+        toast.error(message);
     }
     return Promise.reject(error);
 });

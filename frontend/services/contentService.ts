@@ -44,5 +44,13 @@ export const userService = {
     getRoles: async () => {
         const { data } = await API.get('/roles');
         return data;
+    },
+    createUser: async (payload: { username: string; password?: string; roleId: string }) => {
+        const { data } = await API.post('/users', payload);
+        return data;
+    },
+    deleteUser: async (id: string) => {
+        const { data } = await API.delete(`/users/${id}`);
+        return data;
     }
 };
