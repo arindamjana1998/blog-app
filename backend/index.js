@@ -1,9 +1,19 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const connectDB = require('./src/config/db');
-const seedData = require('./src/seeds/seed');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const connectDB = require("./src/config/db");
+const seedData = require("./src/seeds/seed");
+
+// Import Routes
+const authRoutes = require("./src/routes/authRoutes");
+const contentRoutes = require("./src/routes/contentRoutes");
+const dashboardRoutes = require("./src/routes/dashboardRoutes");
+const userRoutes = require("./src/routes/userRoutes");
+const roleRoutes = require("./src/routes/roleRoutes");
+
+// Import Middleware
+const errorHandler = require("./src/middlewares/errorMiddleware");
 
 // Connect to Database
 connectDB();
@@ -16,31 +26,25 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use(morgan('dev'));
-
-// Routes
-app.use('/api/auth', require('./src/routes/authRoutes'));
-app.use('/api/content', require('./src/routes/contentRoutes'));
-app.use('/api/dashboard', require('./src/routes/dashboardRoutes'));
-app.use('/api/users', require('./src/routes/userRoutes'));
-app.use('/api/roles', require('./src/routes/roleRoutes'));
+app.use(morgan("dev"));
 
 // Root route
-app.get('/', (req, res) => {
-    res.send('CMS API is running...');
+app.get("/api", (req, res) => {
+  res.send("CMS API is running...");
 });
 
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/content", contentRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/roles", roleRoutes);
+
 // Error Handler Middleware
-app.use((err, req, res, next) => {
-    const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-    res.status(statusCode).json({
-        message: err.message,
-        stack: process.env.NODE_ENV === 'production' ? null : err.stack,
-    });
-});
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
