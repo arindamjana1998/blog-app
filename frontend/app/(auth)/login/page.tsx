@@ -1,25 +1,32 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { Lock, User as UserIcon, Loader2, Shield, Eye, EyeOff } from 'lucide-react';
+import React, { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import {
+  Lock,
+  User as UserIcon,
+  Loader2,
+  Shield,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBtnLoading(true);
-    setError('');
+    setError("");
     try {
       await login({ username, password });
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid credentials');
+      setError(err.response?.data?.message || "Invalid credentials");
     } finally {
       setBtnLoading(false);
     }
@@ -36,10 +43,12 @@ const LoginPage = () => {
         <div className="bg-slate-900/50 backdrop-blur-xl p-8 rounded-2xl border border-slate-800 shadow-2xl">
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 mb-4">
-                <Shield className="w-8 h-8 text-blue-500" />
+              <Shield className="w-8 h-8 text-blue-500" />
             </div>
             <h1 className="text-3xl font-bold text-white">Welcome Back</h1>
-            <p className="text-slate-400 mt-2">Sign in to manage your content</p>
+            <p className="text-slate-400 mt-2">
+              Sign in to manage your content
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -50,7 +59,9 @@ const LoginPage = () => {
             )}
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300 ml-1">Username</label>
+              <label className="text-sm font-medium text-slate-300 ml-1">
+                Username
+              </label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <UserIcon className="h-5 w-5 text-slate-500 group-focus-within:text-blue-500 transition-colors" />
@@ -61,31 +72,37 @@ const LoginPage = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="block w-full pl-11 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
-                  placeholder="admin"
+                  placeholder="Username"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300 ml-1">Password</label>
+              <label className="text-sm font-medium text-slate-300 ml-1">
+                Password
+              </label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Lock className="h-5 w-5 text-slate-500 group-focus-within:text-blue-500 transition-colors" />
                 </div>
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="block w-full pl-11 pr-12 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
-                  placeholder="••••••••"
+                  placeholder="Password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-500 hover:text-blue-500 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -98,9 +115,7 @@ const LoginPage = () => {
               {btnLoading ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : (
-                <span className="flex items-center gap-2">
-                    Sign In
-                </span>
+                <span className="flex items-center gap-2">Sign In</span>
               )}
             </button>
           </form>
