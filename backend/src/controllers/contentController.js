@@ -11,6 +11,7 @@ const getContents = async (req, res) => {
         const contents = await Content.find(query)
             .populate('createdBy', 'username')
             .populate('updatedBy', 'username')
+            .populate('approvalHistory.actedBy', 'username')
             .sort({ updatedAt: -1 });
         res.json(contents);
     } catch (error) {
@@ -113,7 +114,11 @@ const submitContent = async (req, res) => {
         });
 
         await content.save();
-        res.json(content);
+        const populatedContent = await Content.findById(content._id)
+            .populate('createdBy', 'username')
+            .populate('updatedBy', 'username')
+            .populate('approvalHistory.actedBy', 'username');
+        res.json(populatedContent);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -154,7 +159,11 @@ const approveContent = async (req, res) => {
         }
 
         await content.save();
-        res.json(content);
+        const populatedContent = await Content.findById(content._id)
+            .populate('createdBy', 'username')
+            .populate('updatedBy', 'username')
+            .populate('approvalHistory.actedBy', 'username');
+        res.json(populatedContent);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -186,7 +195,11 @@ const rejectContent = async (req, res) => {
         }
 
         await content.save();
-        res.json(content);
+        const populatedContent = await Content.findById(content._id)
+            .populate('createdBy', 'username')
+            .populate('updatedBy', 'username')
+            .populate('approvalHistory.actedBy', 'username');
+        res.json(populatedContent);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

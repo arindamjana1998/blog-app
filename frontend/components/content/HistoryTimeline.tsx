@@ -66,7 +66,7 @@ const HistoryTimeline: React.FC<HistoryTimelineProps> = ({ history }) => {
                   <User className="w-2.5 h-2.5 text-slate-500" />
                 </div>
                 <span className="text-xs font-medium text-slate-500">
-                  by {item.actedBy.username}
+                  by {item.actedBy?.username || "Unknown User"}
                 </span>
               </div>
 

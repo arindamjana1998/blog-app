@@ -3,6 +3,11 @@ const User = require('../models/User');
 
 const seedData = async () => {
     try {
+        // Skip seeding if roles already exist
+        const roleCount = await Role.countDocuments();
+        if (roleCount > 0) {
+            return;
+        }
         // Roles
         const roles = [
             { name: 'Admin', slug: 'admin', description: 'System Administrator', isSystemRole: true },
