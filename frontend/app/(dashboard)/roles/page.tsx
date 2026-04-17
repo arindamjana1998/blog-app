@@ -9,17 +9,18 @@ const RolesPage = () => {
   const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchRoles = async () => {
+    try {
+      const data = await userService.getRoles();
+      setRoles(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const data = await userService.getRoles();
-        setRoles(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchRoles();
   }, []);
 
@@ -29,7 +30,7 @@ const RolesPage = () => {
     <div className="p-8 max-w-7xl mx-auto">
       <RoleHeader />
 
-      <RoleTable roles={roles} />
+      <RoleTable roles={roles} onRefresh={fetchRoles} />
     </div>
   );
 };

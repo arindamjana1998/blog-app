@@ -35,7 +35,7 @@ const HistoryTimeline: React.FC<HistoryTimelineProps> = ({ history }) => {
                   ? "bg-emerald-500 text-white"
                   : item.action === "REJECTED"
                     ? "bg-red-500 text-white"
-                    : "bg-blue-500 text-white"
+                    : "bg-blue-500 text-white",
               )}
             >
               {item.action === "APPROVED" ? (

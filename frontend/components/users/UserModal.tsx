@@ -12,7 +12,11 @@ interface UserModalProps {
   onSuccess: () => void;
 }
 
-const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSuccess }) => {
+const UserModal: React.FC<UserModalProps> = ({
+  isOpen,
+  onClose,
+  onSuccess,
+}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [roleId, setRoleId] = useState("");
@@ -66,7 +70,9 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSuccess }) => 
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
               <UserPlus className="w-5 h-5 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-slate-900">Create New User</h2>
+            <h2 className="text-xl font-bold text-slate-900">
+              Create New User
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -78,7 +84,9 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSuccess }) => 
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">Username</label>
+            <label className="text-sm font-semibold text-slate-700">
+              Username
+            </label>
             <input
               type="text"
               required
@@ -90,7 +98,9 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSuccess }) => 
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">Password</label>
+            <label className="text-sm font-semibold text-slate-700">
+              Password
+            </label>
             <input
               type="password"
               required
@@ -102,7 +112,9 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSuccess }) => 
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">System Role</label>
+            <label className="text-sm font-semibold text-slate-700">
+              System Role
+            </label>
             <div className="relative">
               <select
                 required

@@ -52,5 +52,9 @@ export const userService = {
     deleteUser: async (id: string) => {
         const { data } = await API.delete(`/users/${id}`);
         return data;
+    },
+    deleteRole: async (id: string) => {
+        const { data } = await API.delete(`/roles/${id}`);
+        return data;
     }
 };

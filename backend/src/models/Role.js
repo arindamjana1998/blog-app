@@ -13,7 +13,11 @@ const roleSchema = new mongoose.Schema({
         unique: true,
         lowercase: true
     },
-    description: String
+    description: String,
+    isSystemRole: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Role', roleSchema);

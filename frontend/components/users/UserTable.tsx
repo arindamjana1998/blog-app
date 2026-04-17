@@ -67,13 +67,15 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete }) => {
                   </div>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <button
-                    onClick={() => onDelete(user._id)}
-                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                    title="Delete User"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  {user.role?.slug !== "admin" && (
+                    <button
+                      onClick={() => onDelete(user._id)}
+                      className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                      title="Delete User"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))
