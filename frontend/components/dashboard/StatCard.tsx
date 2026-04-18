@@ -37,7 +37,7 @@ const StatCard: React.FC<StatCardProps> = ({
             color === "emerald" && "bg-emerald-50 text-emerald-600",
             color === "red" && "bg-red-50 text-red-600",
             color === "indigo" && "bg-indigo-50 text-indigo-600",
-            color === "slate" && "bg-slate-50 text-slate-600"
+            color === "slate" && "bg-slate-50 text-slate-600",
           )}
         >
           <Icon className="w-6 h-6" />
@@ -55,7 +55,7 @@ const StatCard: React.FC<StatCardProps> = ({
           color === "emerald" && "bg-emerald-600",
           color === "red" && "bg-red-600",
           color === "indigo" && "bg-indigo-600",
-          color === "slate" && "bg-slate-600"
+          color === "slate" && "bg-slate-600",
         )}
       />
     </div>

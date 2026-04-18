@@ -2,7 +2,15 @@
 
 import React from "react";
 import { Content } from "@/types";
-import { Edit3, Send, CheckCircle, XCircle, Eye, FileUp, Globe } from "lucide-react";
+import {
+  Edit3,
+  Send,
+  CheckCircle,
+  XCircle,
+  Eye,
+  FileUp,
+  Globe,
+} from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import StatusBadge from "./StatusBadge";
 import { useAuth } from "@/context/AuthContext";
@@ -123,9 +131,13 @@ const ContentTable: React.FC<ContentTableProps> = ({
                       content.status === "pending_review_level_2") &&
                       (user?.role === "admin" || user?.role === "reviewer") &&
                       // Segregation of Duties check for L2 (Admins exempt)
-                      !(user?.role !== "admin" && 
-                        content.status === "pending_review_level_2" && 
-                        content.approvalHistory.find(h => h.step === 1 && h.action === 'APPROVED')?.actedBy?._id === user?._id) && (
+                      !(
+                        user?.role !== "admin" &&
+                        content.status === "pending_review_level_2" &&
+                        content.approvalHistory.find(
+                          (h) => h.step === 1 && h.action === "APPROVED",
+                        )?.actedBy?._id === user?._id
+                      ) && (
                         <>
                           <button
                             onClick={() => onAction(content, "approve")}

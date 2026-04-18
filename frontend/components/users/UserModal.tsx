@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { userService } from "@/services/contentService";
 import { X, Loader2, UserPlus, Shield, Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";

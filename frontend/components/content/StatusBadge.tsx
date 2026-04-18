@@ -24,7 +24,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, className }) => {
       className={cn(
         "px-2.5 py-1 rounded-full text-xs font-bold border uppercase tracking-tight whitespace-nowrap",
         styles[status] || styles.draft,
-        className
+        className,
       )}
     >
       {status.replace(/_/g, " ")}

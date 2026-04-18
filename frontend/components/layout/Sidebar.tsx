@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
@@ -92,7 +91,9 @@ const Sidebar = () => {
               {user.username}
             </p>
             <p className="text-xs text-slate-500 capitalize">
-              {typeof user.role === 'string' ? user.role : (user.role as any)?.name || 'User'}
+              {typeof user.role === "string"
+                ? user.role
+                : (user.role as any)?.name || "User"}
             </p>
           </div>
         </div>

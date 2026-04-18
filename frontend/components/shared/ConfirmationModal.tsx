@@ -78,7 +78,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             disabled={loading}
             className={cn(
               "flex-1 py-3 text-white rounded-xl font-bold transition-all flex items-center justify-center shadow-lg disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer",
-              variantStyles[variant]
+              variantStyles[variant],
             )}
           >
             {loading ? (

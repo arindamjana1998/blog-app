@@ -61,7 +61,11 @@ const ContentModal: React.FC<ContentModalProps> = ({
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
         <div className="flex justify-between items-center p-6 border-b border-slate-50">
           <h2 className="text-xl font-bold text-slate-900">
-            {content ? isPublished ? "View Published Content" : "Edit Content" : "Create New Content"}
+            {content
+              ? isPublished
+                ? "View Published Content"
+                : "Edit Content"
+              : "Create New Content"}
           </h2>
           <button
             onClick={onClose}
@@ -73,7 +77,9 @@ const ContentModal: React.FC<ContentModalProps> = ({
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">Title</label>
+            <label className="text-sm font-semibold text-slate-700">
+              Title
+            </label>
             <input
               type="text"
               required

@@ -4,14 +4,7 @@ import React, { useEffect, useState } from "react";
 import { contentService } from "@/services/contentService";
 import { Content } from "@/types";
 import { useAuth } from "@/context/AuthContext";
-import {
-  X,
-  FileText,
-  Loader2,
-  CheckCircle,
-  XCircle,
-  Eye,
-} from "lucide-react";
+import { X, FileText, Loader2, CheckCircle, XCircle, Eye } from "lucide-react";
 import { cn, formatDate } from "@/lib/utils";
 import WorkflowModal from "../content/WorkflowModal";
 import DetailsModal from "../content/DetailsModal";
@@ -35,7 +28,7 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
   const [isWorkflowModalOpen, setIsWorkflowModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [workflowType, setWorkflowType] = useState<"approve" | "reject">(
-    "approve"
+    "approve",
   );
   const { user } = useAuth();
 
@@ -61,7 +54,7 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
 
   const handleAction = (
     content: Content,
-    action: "approve" | "reject" | "details"
+    action: "approve" | "reject" | "details",
   ) => {
     setSelectedContent(content);
     if (action === "details") {
@@ -157,33 +150,39 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
                         </td>
                         <td className="px-6 py-5 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            {(content.status === "pending_review_level_1" || content.status === "pending_review_level_2") &&
+                            {(content.status === "pending_review_level_1" ||
+                              content.status === "pending_review_level_2") &&
                               (user?.role === "admin" ||
                                 user?.role === "reviewer") &&
-                              !(user?.role !== "admin" && 
-                                content.status === "pending_review_level_2" && 
-                                content.approvalHistory.find(h => h.step === 1 && h.action === 'APPROVED')?.actedBy?._id === user?._id) && (
-                              <>
-                                <button
-                                  onClick={() =>
-                                    handleAction(content, "approve")
-                                  }
-                                  className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors cursor-pointer"
-                                  title="Approve"
-                                >
-                                  <CheckCircle className="w-5 h-5" />
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    handleAction(content, "reject")
-                                  }
-                                  className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-100 rounded-lg transition-colors cursor-pointer"
-                                  title="Reject"
-                                >
-                                  <XCircle className="w-5 h-5" />
-                                </button>
-                              </>
-                            )}
+                              !(
+                                user?.role !== "admin" &&
+                                content.status === "pending_review_level_2" &&
+                                content.approvalHistory.find(
+                                  (h) =>
+                                    h.step === 1 && h.action === "APPROVED",
+                                )?.actedBy?._id === user?._id
+                              ) && (
+                                <>
+                                  <button
+                                    onClick={() =>
+                                      handleAction(content, "approve")
+                                    }
+                                    className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors cursor-pointer"
+                                    title="Approve"
+                                  >
+                                    <CheckCircle className="w-5 h-5" />
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleAction(content, "reject")
+                                    }
+                                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-100 rounded-lg transition-colors cursor-pointer"
+                                    title="Reject"
+                                  >
+                                    <XCircle className="w-5 h-5" />
+                                  </button>
+                                </>
+                              )}
                             <button
                               onClick={() => handleAction(content, "details")}
                               className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"

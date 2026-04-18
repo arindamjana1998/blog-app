@@ -36,7 +36,9 @@ const WorkflowModal: React.FC<WorkflowModalProps> = ({
       } else {
         await contentService.rejectContent(content._id, comment);
       }
-      toast.success(type === 'approve' ? 'Content approved' : 'Content rejected');
+      toast.success(
+        type === "approve" ? "Content approved" : "Content rejected",
+      );
       onSuccess();
       onClose();
     } catch (err) {
@@ -57,7 +59,9 @@ const WorkflowModal: React.FC<WorkflowModalProps> = ({
             <div
               className={cn(
                 "p-2 rounded-lg",
-                isApprove ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"
+                isApprove
+                  ? "bg-emerald-50 text-emerald-600"
+                  : "bg-red-50 text-red-600",
               )}
             >
               {isApprove ? (
@@ -67,9 +71,9 @@ const WorkflowModal: React.FC<WorkflowModalProps> = ({
               )}
             </div>
             <h2 className="text-xl font-bold text-slate-900">
-              {isApprove 
-                ? content.status === "pending_review_level_1" 
-                  ? "Approve Level 1" 
+              {isApprove
+                ? content.status === "pending_review_level_1"
+                  ? "Approve Level 1"
                   : "Approve Level 2"
                 : "Reject Content"}
             </h2>
@@ -123,13 +127,17 @@ const WorkflowModal: React.FC<WorkflowModalProps> = ({
                 "flex-1 py-2.5 text-white rounded-xl font-bold transition-all flex items-center justify-center disabled:opacity-70 cursor-pointer",
                 isApprove
                   ? "bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-600/20"
-                  : "bg-red-600 hover:bg-red-700 shadow-lg shadow-red-600/20"
+                  : "bg-red-600 hover:bg-red-700 shadow-lg shadow-red-600/20",
               )}
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : isApprove ? (
-                content.status === "pending_review_level_1" ? "Confirm L1 Approval" : "Confirm L2 Approval"
+                content.status === "pending_review_level_1" ? (
+                  "Confirm L1 Approval"
+                ) : (
+                  "Confirm L2 Approval"
+                )
               ) : (
                 "Confirm Rejection"
               )}

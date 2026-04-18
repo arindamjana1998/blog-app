@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ApprovalHistory } from "@/types";
-import { CheckCircle2, XCircle, Send, User, FileUp, Globe } from "lucide-react";
+import { CheckCircle2, XCircle, User, FileUp, Globe } from "lucide-react";
 import { cn, formatDate } from "@/lib/utils";
 
 interface HistoryTimelineProps {
@@ -44,7 +44,8 @@ const HistoryTimeline: React.FC<HistoryTimelineProps> = ({ history }) => {
             >
               {item.action === "APPROVED" ? (
                 <CheckCircle2 className="w-5 h-5" />
-              ) : item.action === "REJECTED" || item.action === "UNPUBLISHED" ? (
+              ) : item.action === "REJECTED" ||
+                item.action === "UNPUBLISHED" ? (
                 <XCircle className="w-5 h-5" />
               ) : item.action === "PUBLISHED" ? (
                 <Globe className="w-5 h-5" />

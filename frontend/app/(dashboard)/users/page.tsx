@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { userService } from "@/services/contentService";
 import { User } from "@/types";
 import UserTable from "@/components/users/UserTable";

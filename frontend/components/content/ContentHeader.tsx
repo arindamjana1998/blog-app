@@ -14,7 +14,9 @@ const ContentHeader: React.FC<ContentHeaderProps> = ({ onNewContent }) => {
   return (
     <div className="flex justify-between items-center mb-10">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Content Management</h1>
+        <h1 className="text-3xl font-bold text-slate-900">
+          Content Management
+        </h1>
         <p className="text-slate-500 mt-1">
           Create and manage your content approval lifecycle
         </p>
