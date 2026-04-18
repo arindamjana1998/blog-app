@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 
 const approvalHistorySchema = new mongoose.Schema({
   step: {
-    type: Number, // 1 for L1, 2 for L2
+    type: Number, // 1: L1/Submit, 2: L2, 3: Published, 4: Unpublished
     required: true,
   },
   action: {
-    type: String, // SUBMITTED, APPROVED, REJECTED
+    type: String,
+    enum: ["SUBMITTED", "APPROVED", "REJECTED", "PUBLISHED", "UNPUBLISHED"],
     required: true,
   },
   comment: String,
