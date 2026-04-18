@@ -22,7 +22,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         const currentUser = authService.getCurrentUser();
         if (currentUser) {
-            setUser(currentUser);
+            // Migration check: Clear legacy object-based roles
+            if (currentUser.role && typeof currentUser.role !== 'string') {
+                console.warn('Legacy session detected, clearing storage...');
+                authService.logout();
+                setUser(null);
+            } else {
+                setUser(currentUser);
+            }
         }
         setLoading(false);
     }, []);

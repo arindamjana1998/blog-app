@@ -7,11 +7,12 @@ class DashboardService {
         const totalRoles = await dashboardRepository.getRoleCount();
 
         const summary = {
-            DRAFT: 0,
-            PENDING_L1: 0,
-            PENDING_L2: 0,
-            APPROVED: 0,
-            REJECTED: 0,
+            draft: 0,
+            pending_review_level_1: 0,
+            pending_review_level_2: 0,
+            approved: 0,
+            rejected: 0,
+            published: 0,
             totalContent: 0,
             totalUsers,
             totalRoles

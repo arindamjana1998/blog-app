@@ -83,8 +83,8 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
               <FileText className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-slate-900">
-                {status === "ALL" ? "Total Content" : status.replace("_", " ")}
+              <h2 className="text-2xl font-bold text-slate-900 capitalize">
+                {status === "ALL" ? "Total Content" : status.replace(/_/g, " ")}
               </h2>
               <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mt-0.5">
                 Quick Dashboard View
@@ -157,10 +157,12 @@ const SummaryModal: React.FC<SummaryModalProps> = ({
                         </td>
                         <td className="px-6 py-5 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            {((content.status === "PENDING_L1" &&
-                              user?.role.slug === "reviewer_l1") ||
-                              (content.status === "PENDING_L2" &&
-                                user?.role.slug === "reviewer_l2")) && (
+                            {(content.status === "pending_review_level_1" || content.status === "pending_review_level_2") &&
+                              (user?.role === "admin" ||
+                                user?.role === "reviewer") &&
+                              !(user?.role !== "admin" && 
+                                content.status === "pending_review_level_2" && 
+                                content.approvalHistory.find(h => h.step === 1 && h.action === 'APPROVED')?.actedBy?._id === user?._id) && (
                               <>
                                 <button
                                   onClick={() =>

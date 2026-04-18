@@ -1,21 +1,14 @@
-export type RoleSlug = 'admin' | 'creator' | 'reviewer_l1' | 'reviewer_l2';
-
-export interface Role {
-    _id: string;
-    name: string;
-    slug: RoleSlug;
-    description?: string;
-}
+export type RoleSlug = 'admin' | 'reviewer' | 'creator';
 
 export interface User {
     _id: string;
     username: string;
-    role: Role;
+    role: RoleSlug;
 }
 
 export interface ApprovalHistory {
     step: number;
-    action: 'SUBMITTED' | 'APPROVED' | 'REJECTED';
+    action: 'SUBMITTED' | 'APPROVED' | 'REJECTED' | 'PUBLISHED' | 'UNPUBLISHED';
     comment?: string;
     actedBy: {
         _id: string;
@@ -24,15 +17,14 @@ export interface ApprovalHistory {
     actedAt: string;
 }
 
-export type ContentStatus = 'DRAFT' | 'PENDING_L1' | 'PENDING_L2' | 'APPROVED' | 'REJECTED';
+export type ContentStatus = 'draft' | 'pending_review_level_1' | 'pending_review_level_2' | 'rejected' | 'approved' | 'published';
 
 export interface Content {
     _id: string;
     title: string;
     description: string;
     status: ContentStatus;
-    currentStep: number;
-    isEditable: boolean;
+    currentStep: string;
     createdBy: {
         _id: string;
         username: string;
@@ -48,11 +40,12 @@ export interface Content {
 }
 
 export interface DashboardSummary {
-    DRAFT: number;
-    PENDING_L1: number;
-    PENDING_L2: number;
-    APPROVED: number;
-    REJECTED: number;
+    draft: number;
+    pending_review_level_1: number;
+    pending_review_level_2: number;
+    rejected: number;
+    approved: number;
+    published: number;
     totalContent: number;
     totalUsers: number;
     totalRoles: number;

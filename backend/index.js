@@ -10,7 +10,6 @@ const authRoutes = require("./src/routes/authRoutes");
 const contentRoutes = require("./src/routes/contentRoutes");
 const dashboardRoutes = require("./src/routes/dashboardRoutes");
 const userRoutes = require("./src/routes/userRoutes");
-const roleRoutes = require("./src/routes/roleRoutes");
 
 // Import Middleware
 const errorHandler = require("./src/middlewares/errorMiddleware");
@@ -38,7 +37,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/content", contentRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/roles", roleRoutes);
 
 // Error Handler Middleware
 app.use(errorHandler);

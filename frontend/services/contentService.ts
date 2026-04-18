@@ -30,6 +30,14 @@ export const contentService = {
         const { data } = await API.post<Content>(`/content/${id}/reject`, { comment });
         return data;
     },
+    publishContent: async (id: string) => {
+        const { data } = await API.post<Content>(`/content/${id}/publish`);
+        return data;
+    },
+    unpublishContent: async (id: string) => {
+        const { data } = await API.post<Content>(`/content/${id}/unpublish`);
+        return data;
+    },
     getDashboardSummary: async () => {
         const { data } = await API.get<DashboardSummary>('/dashboard/summary');
         return data;
@@ -41,20 +49,12 @@ export const userService = {
         const { data } = await API.get('/users');
         return data;
     },
-    getRoles: async () => {
-        const { data } = await API.get('/roles');
-        return data;
-    },
-    createUser: async (payload: { username: string; password?: string; roleId: string }) => {
+    createUser: async (payload: { username: string; password?: string; role: string }) => {
         const { data } = await API.post('/users', payload);
         return data;
     },
     deleteUser: async (id: string) => {
         const { data } = await API.delete(`/users/${id}`);
-        return data;
-    },
-    deleteRole: async (id: string) => {
-        const { data } = await API.delete(`/roles/${id}`);
         return data;
     }
 };

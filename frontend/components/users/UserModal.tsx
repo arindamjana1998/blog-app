@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { userService } from "@/services/contentService";
-import { Role } from "@/types";
 import { X, Loader2, UserPlus, Shield, Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -19,29 +18,15 @@ const UserModal: React.FC<UserModalProps> = ({
 }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [roleId, setRoleId] = useState("");
-  const [roles, setRoles] = useState<Role[]>([]);
+  const [role, setRole] = useState("reviewer");
   const [loading, setLoading] = useState(false);
-  const [fetchingRoles, setFetchingRoles] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const data = await userService.getRoles();
-        setRoles(data);
-        if (data.length > 0) setRoleId(data[0]._id);
-      } catch (err) {
-        console.error("Failed to fetch roles:", err);
-      } finally {
-        setFetchingRoles(false);
-      }
-    };
-
-    if (isOpen) {
-      fetchRoles();
-    }
-  }, [isOpen]);
+  const roles = [
+    // { value: "admin", label: "ADMIN" },
+    { value: "reviewer", label: "REVIEWER" },
+    { value: "creator", label: "CREATOR" },
+  ];
 
   if (!isOpen) return null;
 
@@ -49,7 +34,7 @@ const UserModal: React.FC<UserModalProps> = ({
     e.preventDefault();
     setLoading(true);
     try {
-      await userService.createUser({ username, password, roleId });
+      await userService.createUser({ username, password, role });
       toast.success("User created successfully");
       onSuccess();
       onClose();
@@ -116,7 +101,11 @@ const UserModal: React.FC<UserModalProps> = ({
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-blue-500 transition-colors cursor-pointer"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
@@ -128,14 +117,13 @@ const UserModal: React.FC<UserModalProps> = ({
             <div className="relative">
               <select
                 required
-                value={roleId}
-                onChange={(e) => setRoleId(e.target.value)}
-                disabled={fetchingRoles}
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
                 className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium appearance-none cursor-pointer disabled:opacity-50"
               >
-                {roles.map((role) => (
-                  <option key={role._id} value={role._id}>
-                    {role.name.toUpperCase()}
+                {roles.map((r) => (
+                  <option key={r.value} value={r.value}>
+                    {r.label}
                   </option>
                 ))}
               </select>
@@ -155,7 +143,7 @@ const UserModal: React.FC<UserModalProps> = ({
             </button>
             <button
               type="submit"
-              disabled={loading || fetchingRoles}
+              disabled={loading}
               className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all flex items-center justify-center shadow-lg shadow-blue-600/20 disabled:opacity-70 cursor-pointer"
             >
               {loading ? (

@@ -4,9 +4,9 @@ const authorize = (...roles) => {
             return res.status(401).json({ message: 'User role not defined' });
         }
 
-        if (!roles.includes(req.user.role.slug)) {
+        if (!roles.includes(req.user.role)) {
             return res.status(403).json({
-                message: `User role ${req.user.role.name} is not authorized to access this route`
+                message: `User role ${req.user.role} is not authorized to access this route`
             });
         }
         next();

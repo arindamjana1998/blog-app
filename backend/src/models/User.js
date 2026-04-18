@@ -13,8 +13,9 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     role: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Role',
+        type: String,
+        enum: ['admin', 'reviewer', 'creator'],
+        default: 'reviewer',
         required: true
     },
     isActive: {

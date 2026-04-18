@@ -7,7 +7,9 @@ const {
     updateContent,
     submitContent,
     approveContent,
-    rejectContent
+    rejectContent,
+    publishContent,
+    unpublishContent
 } = require('../controllers/contentController');
 const { protect } = require('../middlewares/auth');
 const { authorize } = require('../middlewares/rbac');
@@ -21,7 +23,9 @@ router.route('/:id')
     .put(protect, authorize('admin', 'creator'), updateContent);
 
 router.post('/:id/submit', protect, authorize('admin', 'creator'), submitContent);
-router.post('/:id/approve', protect, authorize('reviewer_l1', 'reviewer_l2'), approveContent);
-router.post('/:id/reject', protect, authorize('reviewer_l1', 'reviewer_l2'), rejectContent);
+router.post('/:id/approve', protect, authorize('admin', 'reviewer'), approveContent);
+router.post('/:id/reject', protect, authorize('admin', 'reviewer'), rejectContent);
+router.post('/:id/publish', protect, authorize('admin'), publishContent);
+router.post('/:id/unpublish', protect, authorize('admin'), unpublishContent);
 
 module.exports = router;

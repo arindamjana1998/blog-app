@@ -15,14 +15,11 @@ class AuthService {
             throw new AppError('Invalid username or password', 401);
         }
 
-        // Populate role if not already populated (findByUsername might not have populated it)
-        const populatedUser = await user.populate('role');
-
         return {
-            _id: populatedUser._id,
-            username: populatedUser.username,
-            role: populatedUser.role,
-            token: this.generateToken(populatedUser._id)
+            _id: user._id,
+            username: user.username,
+            role: user.role,
+            token: this.generateToken(user._id)
         };
     }
 

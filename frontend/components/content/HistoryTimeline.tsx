@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ApprovalHistory } from "@/types";
-import { CheckCircle2, XCircle, Send, User } from "lucide-react";
+import { CheckCircle2, XCircle, Send, User, FileUp, Globe } from "lucide-react";
 import { cn, formatDate } from "@/lib/utils";
 
 interface HistoryTimelineProps {
@@ -35,15 +35,21 @@ const HistoryTimeline: React.FC<HistoryTimelineProps> = ({ history }) => {
                   ? "bg-emerald-500 text-white"
                   : item.action === "REJECTED"
                     ? "bg-red-500 text-white"
-                    : "bg-blue-500 text-white",
+                    : item.action === "PUBLISHED"
+                      ? "bg-blue-600 text-white"
+                      : item.action === "UNPUBLISHED"
+                        ? "bg-amber-600 text-white"
+                        : "bg-blue-500 text-white",
               )}
             >
               {item.action === "APPROVED" ? (
                 <CheckCircle2 className="w-5 h-5" />
-              ) : item.action === "REJECTED" ? (
+              ) : item.action === "REJECTED" || item.action === "UNPUBLISHED" ? (
                 <XCircle className="w-5 h-5" />
+              ) : item.action === "PUBLISHED" ? (
+                <Globe className="w-5 h-5" />
               ) : (
-                <Send className="w-4 h-4" />
+                <FileUp className="w-4 h-4" />
               )}
             </div>
 
@@ -54,7 +60,11 @@ const HistoryTimeline: React.FC<HistoryTimelineProps> = ({ history }) => {
                     ? "Submitted"
                     : item.action === "APPROVED"
                       ? `Approved (L${item.step})`
-                      : "Rejected"}
+                      : item.action === "PUBLISHED"
+                        ? "Published"
+                        : item.action === "UNPUBLISHED"
+                          ? "Unpublished"
+                          : "Rejected"}
                 </h4>
                 <span className="text-[10px] font-bold text-slate-400 uppercase">
                   {formatDate(item.actedAt)}

@@ -54,12 +54,14 @@ const ContentModal: React.FC<ContentModalProps> = ({
     }
   };
 
+  const isPublished = content?.status === "published";
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
         <div className="flex justify-between items-center p-6 border-b border-slate-50">
           <h2 className="text-xl font-bold text-slate-900">
-            {content ? "Edit Content" : "Create New Content"}
+            {content ? isPublished ? "View Published Content" : "Edit Content" : "Create New Content"}
           </h2>
           <button
             onClick={onClose}
@@ -75,9 +77,10 @@ const ContentModal: React.FC<ContentModalProps> = ({
             <input
               type="text"
               required
+              disabled={isPublished}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium disabled:opacity-60"
               placeholder="Enter content title"
             />
           </div>
@@ -88,9 +91,10 @@ const ContentModal: React.FC<ContentModalProps> = ({
             <textarea
               required
               rows={4}
+              disabled={isPublished}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium disabled:opacity-60"
               placeholder="Describe your content..."
             />
           </div>
@@ -103,19 +107,21 @@ const ContentModal: React.FC<ContentModalProps> = ({
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all flex items-center justify-center disabled:opacity-70 cursor-pointer"
-            >
-              {loading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : content ? (
-                "Update Content"
-              ) : (
-                "Create Content"
-              )}
-            </button>
+            {!isPublished && (
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all flex items-center justify-center disabled:opacity-70 cursor-pointer"
+              >
+                {loading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : content ? (
+                  "Update Content"
+                ) : (
+                  "Create Content"
+                )}
+              </button>
+            )}
           </div>
         </form>
       </div>

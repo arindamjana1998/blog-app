@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { contentService } from "@/services/contentService";
 import { Content } from "@/types";
@@ -12,7 +12,7 @@ import WorkflowModal from "@/components/content/WorkflowModal";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
 import { toast } from "react-toastify";
 
-const ContentPage = () => {
+const ContentPageContent = () => {
   const [contents, setContents] = useState<Content[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -21,7 +21,7 @@ const ContentPage = () => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedContent, setSelectedContent] = useState<Content | null>(null);
   const [workflowType, setWorkflowType] = useState<"approve" | "reject">(
-    "approve"
+    "approve",
   );
   const searchParams = useSearchParams();
   const statusFilter = searchParams.get("status");
@@ -52,6 +52,7 @@ const ContentPage = () => {
       setIsCreateModalOpen(true);
     } else if (action === "submit") {
       setSelectedContent(content);
+      setWorkflowType("submit" as any); // Reusing confirmation modal
       setIsConfirmModalOpen(true);
     } else if (action === "approve") {
       setSelectedContent(content);
@@ -61,13 +62,29 @@ const ContentPage = () => {
       setSelectedContent(content);
       setWorkflowType("reject");
       setIsWorkflowModalOpen(true);
+    } else if (action === "publish") {
+      setSelectedContent(content);
+      setWorkflowType("publish" as any);
+      setIsConfirmModalOpen(true);
+    } else if (action === "unpublish") {
+      setSelectedContent(content);
+      setWorkflowType("unpublish" as any);
+      setIsConfirmModalOpen(true);
     }
   };
 
-  const handleConfirmSubmit = async () => {
+  const handleConfirmAction = async () => {
     if (selectedContent) {
-      await contentService.submitContent(selectedContent._id);
-      toast.success("Content submitted for review");
+      if (workflowType === ("submit" as any)) {
+        await contentService.submitContent(selectedContent._id);
+        toast.success("Content submitted for review");
+      } else if (workflowType === ("publish" as any)) {
+        await contentService.publishContent(selectedContent._id);
+        toast.success("Content published successfully");
+      } else if (workflowType === ("unpublish" as any)) {
+        await contentService.unpublishContent(selectedContent._id);
+        toast.success("Content unpublished");
+      }
       setIsConfirmModalOpen(false);
       fetchContents();
     }
@@ -107,7 +124,7 @@ const ContentPage = () => {
         onClose={() => setIsWorkflowModalOpen(false)}
         onSuccess={fetchContents}
         content={selectedContent}
-        type={workflowType}
+        type={workflowType as "approve" | "reject"}
       />
 
       <DetailsModal
@@ -119,13 +136,45 @@ const ContentPage = () => {
       <ConfirmationModal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={handleConfirmSubmit}
-        title="Submit Content"
-        message={`Are you sure you want to submit "${selectedContent?.title}" for level 1 review?`}
-        confirmLabel="Submit"
-        variant="primary"
+        onConfirm={handleConfirmAction}
+        title={
+          workflowType === ("publish" as any)
+            ? "Publish Content"
+            : workflowType === ("unpublish" as any)
+              ? "Unpublish Content"
+              : "Submit Content"
+        }
+        message={
+          workflowType === ("publish" as any)
+            ? `Are you sure you want to publish "${selectedContent?.title}"?`
+            : workflowType === ("unpublish" as any)
+              ? `Are you sure you want to unpublish "${selectedContent?.title}"? It will return to approved state.`
+              : `Are you sure you want to submit "${selectedContent?.title}" for review?`
+        }
+        confirmLabel={
+          workflowType === ("publish" as any)
+            ? "Publish"
+            : workflowType === ("unpublish" as any)
+              ? "Unpublish"
+              : "Submit"
+        }
+        variant={
+          workflowType === ("publish" as any)
+            ? "success"
+            : workflowType === ("unpublish" as any)
+              ? "danger"
+              : "primary"
+        }
       />
     </div>
+  );
+};
+
+const ContentPage = () => {
+  return (
+    <Suspense fallback={<div className="p-8">Loading content...</div>}>
+      <ContentPageContent />
+    </Suspense>
   );
 };
 

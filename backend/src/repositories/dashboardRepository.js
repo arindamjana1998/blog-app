@@ -1,6 +1,5 @@
 const Content = require('../models/Content');
 const User = require('../models/User');
-const Role = require('../models/Role');
 
 class DashboardRepository {
     async getContentStatusCounts() {
@@ -19,7 +18,7 @@ class DashboardRepository {
     }
 
     async getRoleCount() {
-        return await Role.countDocuments();
+        return 2; // Fixed roles: admin, reviewer
     }
 }
 

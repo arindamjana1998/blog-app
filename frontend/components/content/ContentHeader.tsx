@@ -19,7 +19,7 @@ const ContentHeader: React.FC<ContentHeaderProps> = ({ onNewContent }) => {
           Create and manage your content approval lifecycle
         </p>
       </div>
-      {(user?.role.slug === "admin" || user?.role.slug === "creator") && (
+      {(user?.role === "admin" || user?.role === "creator") && (
         <button
           onClick={onNewContent}
           className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-blue-600/20 active:scale-95 cursor-pointer"

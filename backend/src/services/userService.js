@@ -15,7 +15,7 @@ class UserService {
     }
 
     async createUser(userData) {
-        const { username, password, roleId } = userData;
+        const { username, password, role } = userData;
 
         // Check if user already exists
         const userExists = await userRepository.findByUsername(username);
@@ -23,15 +23,9 @@ class UserService {
             throw new AppError('User already exists', 400);
         }
 
-        // Validate role
-        const targetRole = await userRepository.findRoleById(roleId);
-        if (!targetRole) {
-            throw new AppError('Role not found', 404);
-        }
-
         // Rule: Exactly ONE Admin in the system
-        if (targetRole.slug === 'admin') {
-            const adminCount = await userRepository.countByRole(targetRole._id);
+        if (role === 'admin') {
+            const adminCount = await userRepository.countByRole('admin');
             if (adminCount > 0) {
                 throw new AppError('Exactly ONE Admin is allowed in the system.', 400);
             }
@@ -40,7 +34,7 @@ class UserService {
         const user = await userRepository.create({
             username,
             password,
-            role: roleId
+            role: role || 'reviewer' // Default to reviewer
         });
 
         return {
@@ -58,7 +52,7 @@ class UserService {
         }
 
         // Rule: Admin user cannot be deleted
-        if (user.role && user.role.slug === 'admin') {
+        if (user.role === 'admin') {
             throw new AppError('The Admin user cannot be deleted.', 403);
         }
 

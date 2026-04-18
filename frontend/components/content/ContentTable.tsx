@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Content } from "@/types";
-import { Edit3, Send, CheckCircle, XCircle, Eye } from "lucide-react";
+import { Edit3, Send, CheckCircle, XCircle, Eye, FileUp, Globe } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import StatusBadge from "./StatusBadge";
 import { useAuth } from "@/context/AuthContext";
@@ -87,50 +87,90 @@ const ContentTable: React.FC<ContentTableProps> = ({
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
-                    {/* Creator Actions */}
-                    {content.isEditable &&
-                      (user?.role.slug === "admin" ||
-                        user?.role.slug === "creator") && (
+                    {/* Edit Actions */}
+                    {((user?.role === "admin" &&
+                      content.status !== "published") ||
+                      (user?.role === "creator" &&
+                        (content.status === "draft" ||
+                          content.status === "rejected") &&
+                        content.createdBy?._id === user?._id)) && (
+                      <button
+                        onClick={() => onAction(content, "edit")}
+                        className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                        title="Edit"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </button>
+                    )}
+
+                    {/* Submit Actions */}
+                    {(content.status === "draft" ||
+                      content.status === "rejected") &&
+                      (user?.role === "admin" ||
+                        (user?.role === "creator" &&
+                          content.createdBy?._id === user?._id)) && (
+                        <button
+                          onClick={() => onAction(content, "submit")}
+                          className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
+                          title="Submit for Review"
+                        >
+                          <FileUp className="w-4 h-4" />
+                        </button>
+                      )}
+
+                    {/* Review Actions (L1 and L2) */}
+                    {(content.status === "pending_review_level_1" ||
+                      content.status === "pending_review_level_2") &&
+                      (user?.role === "admin" || user?.role === "reviewer") &&
+                      // Segregation of Duties check for L2 (Admins exempt)
+                      !(user?.role !== "admin" && 
+                        content.status === "pending_review_level_2" && 
+                        content.approvalHistory.find(h => h.step === 1 && h.action === 'APPROVED')?.actedBy?._id === user?._id) && (
                         <>
                           <button
-                            onClick={() => onAction(content, "edit")}
-                            className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
-                            title="Edit"
+                            onClick={() => onAction(content, "approve")}
+                            className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors cursor-pointer"
+                            title={
+                              content.status === "pending_review_level_1"
+                                ? "Approve L1"
+                                : "Approve L2"
+                            }
                           >
-                            <Edit3 className="w-4 h-4" />
+                            <CheckCircle className="w-4 h-4" />
                           </button>
                           <button
-                            onClick={() => onAction(content, "submit")}
-                            className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
-                            title="Submit for Review"
+                            onClick={() => onAction(content, "reject")}
+                            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                            title="Reject"
                           >
-                            <Send className="w-4 h-4" />
+                            <XCircle className="w-4 h-4" />
                           </button>
                         </>
                       )}
 
-                    {/* Reviewer Actions */}
-                    {((content.status === "PENDING_L1" &&
-                      user?.role.slug === "reviewer_l1") ||
-                      (content.status === "PENDING_L2" &&
-                        user?.role.slug === "reviewer_l2")) && (
-                      <>
+                    {/* Publish Action */}
+                    {content.status === "approved" &&
+                      (user?.role === "admin" || user?.role === "reviewer") && (
                         <button
-                          onClick={() => onAction(content, "approve")}
-                          className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors cursor-pointer"
-                          title="Approve"
+                          onClick={() => onAction(content, "publish")}
+                          className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                          title="Publish"
                         >
-                          <CheckCircle className="w-4 h-4" />
+                          <Globe className="w-4 h-4" />
                         </button>
+                      )}
+
+                    {/* Unpublish Action */}
+                    {content.status === "published" &&
+                      user?.role === "admin" && (
                         <button
-                          onClick={() => onAction(content, "reject")}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                          title="Reject"
+                          onClick={() => onAction(content, "unpublish")}
+                          className="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+                          title="Unpublish"
                         >
                           <XCircle className="w-4 h-4" />
                         </button>
-                      </>
-                    )}
+                      )}
 
                     <button
                       onClick={() => onViewDetails(content)}

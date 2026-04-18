@@ -29,7 +29,7 @@ const createContent = async (req, res, next) => {
 
 const updateContent = async (req, res, next) => {
     try {
-        const content = await contentService.updateContent(req.params.id, req.body, req.user._id);
+        const content = await contentService.updateContent(req.params.id, req.body, req.user._id, req.user.role);
         res.json(content);
     } catch (error) {
         next(error);
@@ -38,7 +38,7 @@ const updateContent = async (req, res, next) => {
 
 const submitContent = async (req, res, next) => {
     try {
-        const content = await contentService.submitContent(req.params.id, req.user._id);
+        const content = await contentService.submitContent(req.params.id, req.user._id, req.user.role);
         res.json(content);
     } catch (error) {
         next(error);
@@ -50,7 +50,7 @@ const approveContent = async (req, res, next) => {
         const content = await contentService.approveContent(
             req.params.id, 
             req.user._id, 
-            req.user.role.slug, 
+            req.user.role, 
             req.body.comment
         );
         res.json(content);
@@ -64,8 +64,34 @@ const rejectContent = async (req, res, next) => {
         const content = await contentService.rejectContent(
             req.params.id, 
             req.user._id, 
-            req.user.role.slug, 
+            req.user.role, 
             req.body.comment
+        );
+        res.json(content);
+    } catch (error) {
+        next(error);
+    }
+};
+
+const publishContent = async (req, res, next) => {
+    try {
+        const content = await contentService.publishContent(
+            req.params.id, 
+            req.user._id, 
+            req.user.role
+        );
+        res.json(content);
+    } catch (error) {
+        next(error);
+    }
+};
+
+const unpublishContent = async (req, res, next) => {
+    try {
+        const content = await contentService.unpublishContent(
+            req.params.id, 
+            req.user._id, 
+            req.user.role
         );
         res.json(content);
     } catch (error) {
@@ -80,6 +106,8 @@ module.exports = {
     updateContent,
     submitContent,
     approveContent,
-    rejectContent
+    rejectContent,
+    publishContent,
+    unpublishContent
 };
 

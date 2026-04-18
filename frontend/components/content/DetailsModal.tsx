@@ -4,6 +4,7 @@ import React from "react";
 import { Content } from "@/types";
 import { X, FileText, History } from "lucide-react";
 import HistoryTimeline from "./HistoryTimeline";
+import StatusBadge from "./StatusBadge";
 
 interface DetailsModalProps {
   isOpen: boolean;
@@ -59,9 +60,9 @@ const DetailsModal: React.FC<DetailsModalProps> = ({
                 <p className="text-[10px] font-bold text-slate-400 uppercase mb-1">
                   Status
                 </p>
-                <p className="font-bold text-blue-600">
-                  {content.status.replace("_", " ")}
-                </p>
+                <div className="mt-1">
+                  <StatusBadge status={content.status} />
+                </div>
               </div>
               <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
                 <p className="text-[10px] font-bold text-slate-400 uppercase mb-1">

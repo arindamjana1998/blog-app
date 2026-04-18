@@ -62,12 +62,12 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete }) => {
                   <div className="flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-lg border border-slate-200 w-fit">
                     <ShieldCheck className="w-3 h-3 text-slate-500" />
                     <span className="text-[10px] font-bold text-slate-600 uppercase tracking-tight">
-                      {user.role?.name}
+                      {user.role}
                     </span>
                   </div>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  {user.role?.slug !== "admin" && (
+                  {user.role !== "admin" && (
                     <button
                       onClick={() => onDelete(user._id)}
                       className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"

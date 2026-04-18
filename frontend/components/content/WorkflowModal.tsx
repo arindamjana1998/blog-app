@@ -67,7 +67,11 @@ const WorkflowModal: React.FC<WorkflowModalProps> = ({
               )}
             </div>
             <h2 className="text-xl font-bold text-slate-900">
-              {isApprove ? "Approve Content" : "Reject Content"}
+              {isApprove 
+                ? content.status === "pending_review_level_1" 
+                  ? "Approve Level 1" 
+                  : "Approve Level 2"
+                : "Reject Content"}
             </h2>
           </div>
           <button
@@ -125,7 +129,7 @@ const WorkflowModal: React.FC<WorkflowModalProps> = ({
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : isApprove ? (
-                "Confirm Approval"
+                content.status === "pending_review_level_1" ? "Confirm L1 Approval" : "Confirm L2 Approval"
               ) : (
                 "Confirm Rejection"
               )}

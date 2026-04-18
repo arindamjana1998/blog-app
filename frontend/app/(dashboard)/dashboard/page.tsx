@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   AlertCircle,
   XCircle,
+  Globe,
 } from "lucide-react";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatCard from "@/components/dashboard/StatCard";
@@ -50,39 +51,41 @@ const DashboardPage = () => {
       status: "ALL",
     },
     {
-      label: "Pending L1",
-      value: summary?.PENDING_L1 || 0,
+      label: "Pending Review",
+      value:
+        (summary?.pending_review_level_1 || 0) +
+        (summary?.pending_review_level_2 || 0),
       icon: Clock,
       color: "amber",
-      status: "PENDING_L1",
-    },
-    {
-      label: "Pending L2",
-      value: summary?.PENDING_L2 || 0,
-      icon: Clock,
-      color: "indigo",
-      status: "PENDING_L2",
+      status: "pending_review_level_1", // Default to L1 for filter
     },
     {
       label: "Approved",
-      value: summary?.APPROVED || 0,
+      value: summary?.approved || 0,
       icon: CheckCircle2,
       color: "emerald",
-      status: "APPROVED",
+      status: "approved",
+    },
+    {
+      label: "Published",
+      value: summary?.published || 0,
+      icon: Globe,
+      color: "blue",
+      status: "published",
     },
     {
       label: "Rejected",
-      value: summary?.REJECTED || 0,
+      value: summary?.rejected || 0,
       icon: XCircle,
       color: "red",
-      status: "REJECTED",
+      status: "rejected",
     },
     {
       label: "Drafts",
-      value: summary?.DRAFT || 0,
+      value: summary?.draft || 0,
       icon: AlertCircle,
       color: "slate",
-      status: "DRAFT",
+      status: "draft",
     },
   ];
 
@@ -123,9 +126,9 @@ const DashboardPage = () => {
             <CheckCircle2 className="w-10 h-10 text-emerald-500" />
           </div>
           <h2 className="text-2xl font-bold text-slate-900">
-            {summary?.APPROVED || 0}
+            {summary?.published || 0}
           </h2>
-          <p className="text-slate-500">Items Fully Approved</p>
+          <p className="text-slate-500">Items Fully Published</p>
         </div>
       </div>
 

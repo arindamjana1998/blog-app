@@ -25,20 +25,19 @@ const Sidebar = () => {
       label: "Dashboard",
       href: "/dashboard",
       icon: LayoutDashboard,
-      roles: ["admin", "creator", "reviewer_l1", "reviewer_l2"],
+      roles: ["admin", "reviewer", "creator"],
     },
     {
       label: "Content",
       href: "/content",
       icon: FileText,
-      roles: ["admin", "creator", "reviewer_l1", "reviewer_l2"],
+      roles: ["admin", "reviewer", "creator"],
     },
     { label: "Users", href: "/users", icon: Users, roles: ["admin"] },
-    { label: "Roles", href: "/roles", icon: ShieldCheck, roles: ["admin"] },
   ];
 
   const filteredItems = navItems.filter((item) =>
-    item.roles.includes(user.role.slug),
+    item.roles.includes(user.role),
   );
 
   return (
@@ -93,7 +92,7 @@ const Sidebar = () => {
               {user.username}
             </p>
             <p className="text-xs text-slate-500 capitalize">
-              {user.role.name}
+              {typeof user.role === 'string' ? user.role : (user.role as any)?.name || 'User'}
             </p>
           </div>
         </div>

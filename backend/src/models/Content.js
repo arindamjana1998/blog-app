@@ -33,16 +33,13 @@ const contentSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['DRAFT', 'PENDING_L1', 'PENDING_L2', 'APPROVED', 'REJECTED'],
-        default: 'DRAFT'
+        enum: ['draft', 'pending_review_level_1', 'pending_review_level_2', 'rejected', 'approved', 'published'],
+        default: 'draft'
     },
     currentStep: {
-        type: Number,
-        default: 0 // 0: Draft, 1: L1, 2: L2, 3: Approved
-    },
-    isEditable: {
-        type: Boolean,
-        default: true
+        type: String,
+        enum: ['draft', 'review_level_1', 'review_level_2', 'approved', 'rejected', 'published'],
+        default: 'draft'
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
