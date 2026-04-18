@@ -18,16 +18,16 @@ const WorkflowProgress: React.FC<WorkflowProgressProps> = ({ summary }) => {
           </div>
           <div className="flex-1">
             <div className="flex justify-between mb-1">
-              <span className="text-sm font-semibold">In Review</span>
+              <span className="text-sm font-semibold">Published</span>
               <span className="text-sm text-slate-500">
-                {summary?.pending_review_level_1 || 0}
+                {summary?.published || 0}
               </span>
             </div>
             <div className="w-full bg-slate-100 h-2 rounded-full">
               <div
                 className="bg-amber-500 h-2 rounded-full transition-all duration-1000"
                 style={{
-                  width: `${((summary?.pending_review_level_1 || 0) / (summary?.totalContent || 1)) * 100}%`,
+                  width: `${((summary?.published || 0) / (summary?.totalContent || 1)) * 100}%`,
                 }}
               />
             </div>
