@@ -15,8 +15,10 @@ import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatCard from "@/components/dashboard/StatCard";
 import WorkflowProgress from "@/components/dashboard/WorkflowProgress";
 import SummaryModal from "@/components/dashboard/SummaryModal";
+import { useAuth } from "@/context/AuthContext";
 
 const DashboardPage = () => {
+  const { user } = useAuth();
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
@@ -42,52 +44,124 @@ const DashboardPage = () => {
     setIsSummaryModalOpen(true);
   };
 
-  const stats = [
-    {
-      label: "Total Content",
-      value: summary?.totalContent || 0,
-      icon: FileText,
-      color: "blue",
-      status: "ALL",
-    },
-    {
-      label: "Pending Review",
-      value:
-        (summary?.pending_review_level_1 || 0) +
-        (summary?.pending_review_level_2 || 0),
-      icon: Clock,
-      color: "amber",
-      status: "pending_review_level_1", // Default to L1 for filter
-    },
-    {
-      label: "Approved",
-      value: summary?.approved || 0,
-      icon: CheckCircle2,
-      color: "emerald",
-      status: "approved",
-    },
-    {
-      label: "Published",
-      value: summary?.published || 0,
-      icon: Globe,
-      color: "blue",
-      status: "published",
-    },
-    {
-      label: "Rejected",
-      value: summary?.rejected || 0,
-      icon: XCircle,
-      color: "red",
-      status: "rejected",
-    },
-    {
-      label: "Drafts",
-      value: summary?.draft || 0,
-      icon: AlertCircle,
-      color: "slate",
-      status: "draft",
-    },
-  ];
+  const getStats = () => {
+    const baseStats = [];
+
+    if (user?.role === "admin") {
+      baseStats.push(
+        {
+          label: "Total Content",
+          value: summary?.totalContent || 0,
+          icon: FileText,
+          color: "blue",
+          status: "ALL",
+        },
+        {
+          label: "Pending Review",
+          value:
+            (summary?.pending_review_level_1 || 0) +
+            (summary?.pending_review_level_2 || 0),
+          icon: Clock,
+          color: "amber",
+          status: "pending_review_level_1",
+        },
+        {
+          label: "Approved Items",
+          value: summary?.approved || 0,
+          icon: CheckCircle2,
+          color: "emerald",
+          status: "approved",
+        },
+        {
+          label: "Published Items",
+          value: summary?.published || 0,
+          icon: Globe,
+          color: "blue",
+          status: "published",
+        },
+        {
+          label: "Rejected Items",
+          value: summary?.rejected || 0,
+          icon: XCircle,
+          color: "red",
+          status: "rejected",
+        },
+        {
+          label: "Drafts Items",
+          value: summary?.draft || 0,
+          icon: AlertCircle,
+          color: "slate",
+          status: "draft",
+        },
+      );
+    } else if (user?.role === "reviewer") {
+      baseStats.push(
+        {
+          label: "Total Content",
+          value: summary?.totalContent || 0,
+          icon: FileText,
+          color: "blue",
+          status: "ALL",
+        },
+        {
+          label: "Pending L1",
+          value: summary?.pending_review_level_1 || 0,
+          icon: Clock,
+          color: "amber",
+          status: "pending_review_level_1",
+        },
+        {
+          label: "Pending L2",
+          value: summary?.pending_review_level_2 || 0,
+          icon: Clock,
+          color: "indigo",
+          status: "pending_review_level_2",
+        },
+        {
+          label: "Approved (Ready)",
+          value: summary?.approved || 0,
+          icon: CheckCircle2,
+          color: "emerald",
+          status: "approved",
+        },
+      );
+    } else if (user?.role === "creator") {
+      baseStats.push(
+        {
+          label: "My Total Content",
+          value: summary?.totalContent || 0,
+          icon: FileText,
+          color: "blue",
+          status: "ALL",
+        },
+        {
+          label: "My Drafts",
+          value: summary?.draft || 0,
+          icon: AlertCircle,
+          color: "slate",
+          status: "draft",
+        },
+        {
+          label: "My Rejected",
+          value: summary?.rejected || 0,
+          icon: XCircle,
+          color: "red",
+          status: "rejected",
+        },
+        {
+          label: "My Published",
+          value: summary?.published || 0,
+          icon: Globe,
+          color: "indigo",
+          status: "published",
+        },
+      );
+    }
+
+    return baseStats;
+  };
+
+  const stats = getStats();
 
   if (loading)
     return (
@@ -128,7 +202,11 @@ const DashboardPage = () => {
           <h2 className="text-2xl font-bold text-slate-900">
             {summary?.published || 0}
           </h2>
-          <p className="text-slate-500">Items Fully Published</p>
+          <p className="text-slate-500">
+            {user?.role === "creator"
+              ? "My Items Fully Published"
+              : "Total System Published"}
+          </p>
         </div>
       </div>
 

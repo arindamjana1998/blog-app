@@ -27,7 +27,7 @@ const WorkflowProgress: React.FC<WorkflowProgressProps> = ({ summary }) => {
               <div
                 className="bg-amber-500 h-2 rounded-full transition-all duration-1000"
                 style={{
-                  width: `${((summary?.pending_review_level_2 || 0) / (summary?.totalContent || 1)) * 100}%`,
+                  width: `${((summary?.pending_review_level_1 || 0) / (summary?.totalContent || 1)) * 100}%`,
                 }}
               />
             </div>
@@ -41,14 +41,14 @@ const WorkflowProgress: React.FC<WorkflowProgressProps> = ({ summary }) => {
             <div className="flex justify-between mb-1">
               <span className="text-sm font-semibold">Approved</span>
               <span className="text-sm text-slate-500">
-                {summary?.published || 0}
+                {summary?.approved || 0}
               </span>
             </div>
             <div className="w-full bg-slate-100 h-2 rounded-full">
               <div
-                className="bg-emerald-500 h-2 rounded-full transition-all duration-1000"
+                className="bg-indigo-500 h-2 rounded-full transition-all duration-1000"
                 style={{
-                  width: `${((summary?.published || 0) / (summary?.totalContent || 1)) * 100}%`,
+                  width: `${((summary?.approved || 0) / (summary?.totalContent || 1)) * 100}%`,
                 }}
               />
             </div>

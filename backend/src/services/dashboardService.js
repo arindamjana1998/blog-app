@@ -1,8 +1,13 @@
 const dashboardRepository = require('../repositories/dashboardRepository');
 
 class DashboardService {
-    async getSummary() {
-        const counts = await dashboardRepository.getContentStatusCounts();
+    async getSummary(userId, userRole) {
+        const filter = {};
+        if (userRole === 'creator') {
+            filter.createdBy = userId;
+        }
+
+        const counts = await dashboardRepository.getContentStatusCounts(filter);
         const totalUsers = await dashboardRepository.getUserCount();
         const totalRoles = await dashboardRepository.getRoleCount();
 

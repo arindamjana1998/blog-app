@@ -2,15 +2,21 @@ const Content = require('../models/Content');
 const User = require('../models/User');
 
 class DashboardRepository {
-    async getContentStatusCounts() {
-        return await Content.aggregate([
-            {
-                $group: {
-                    _id: "$status",
-                    count: { $sum: 1 }
-                }
+    async getContentStatusCounts(filter = {}) {
+        const pipeline = [];
+        
+        if (Object.keys(filter).length > 0) {
+            pipeline.push({ $match: filter });
+        }
+        
+        pipeline.push({
+            $group: {
+                _id: "$status",
+                count: { $sum: 1 }
             }
-        ]);
+        });
+
+        return await Content.aggregate(pipeline);
     }
 
     async getUserCount() {
